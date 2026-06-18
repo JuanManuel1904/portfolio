@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juan Manuel — Frontend Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0F1A;
+      --surface:   #111827;
+      --surface2:  #1A2235;
+      --border:    rgba(255,255,255,0.07);
+      --green:     #4ADE80;
+      --green-dim: rgba(74,222,128,0.12);
+      --green-mid: rgba(74,222,128,0.25);
+      --text:      #F0F4FF;
+      --muted:     #94A3B8;
+      --faint:     #64748B;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(10,15,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: .875rem;
+      color: var(--green);
+      letter-spacing: .05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .875rem; font-family: var(--font-body);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    .lang-toggle {
+      display: flex; gap: .25rem;
+      background: var(--surface); border-radius: 6px; padding: .25rem;
+    }
+    .lang-btn {
+      font-family: var(--font-mono); font-size: .75rem;
+      padding: .25rem .6rem; border-radius: 4px; border: none;
+      cursor: pointer; transition: all .2s;
+      color: var(--muted); background: transparent;
+    }
+    .lang-btn.active { background: var(--green); color: #0A0F1A; font-weight: 600; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 2rem 4rem;
+      max-width: 900px; margin: 0 auto;
+      position: relative;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: .8rem;
+      color: var(--green); letter-spacing: .15em;
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 1px;
+      background: var(--green);
+    }
+    .hero-name {
+      font-family: var(--font-display); font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700; line-height: 1.05; letter-spacing: -.03em;
+      color: var(--text); margin-bottom: .5rem;
+    }
+    .hero-name span { color: var(--green); }
+    .hero-role {
+      font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 300; color: var(--muted); margin-bottom: 2rem;
+    }
+    .hero-desc {
+      font-size: 1rem; color: var(--muted); max-width: 560px;
+      line-height: 1.75; margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green); color: #0A0F1A;
+      font-family: var(--font-display); font-weight: 600;
+      padding: .75rem 1.75rem; border-radius: 8px;
+      text-decoration: none; font-size: .9rem;
+      transition: all .2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: #22c55e; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      font-family: var(--font-display); font-weight: 500;
+      padding: .75rem 1.75rem; border-radius: 8px;
+      text-decoration: none; font-size: .9rem;
+      border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+
+    /* Grid dots background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(74,222,128,.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; top: 20%; right: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(74,222,128,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono); font-size: .75rem;
+      color: var(--green); letter-spacing: .15em;
+      margin-bottom: .75rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700; letter-spacing: -.02em; margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .about-text { color: var(--muted); line-height: 1.8; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-text strong { color: var(--text); font-weight: 500; }
+
+    .skills-group { margin-bottom: 1.5rem; }
+    .skills-group-label {
+      font-family: var(--font-mono); font-size: .7rem;
+      color: var(--faint); letter-spacing: .1em;
+      margin-bottom: .6rem;
+    }
+    .skills-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .skill-badge {
+      font-family: var(--font-mono); font-size: .75rem;
+      padding: .25rem .65rem; border-radius: 4px;
+      background: var(--surface2); color: var(--green);
+      border: 1px solid rgba(74,222,128,.2);
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; gap: 1.5rem; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all .25s;
+      position: relative;
+    }
+    .project-card:hover {
+      border-color: rgba(74,222,128,.3);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+    .card-accent {
+      height: 3px; width: 100%;
+    }
+    .card-body { padding: 1.75rem; }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
+    .card-icon { font-size: 1.5rem; }
+    .card-links { display: flex; gap: .5rem; }
+    .card-link {
+      display: flex; align-items: center; gap: .35rem;
+      font-family: var(--font-mono); font-size: .7rem;
+      padding: .35rem .7rem; border-radius: 6px;
+      text-decoration: none; transition: all .2s;
+      white-space: nowrap;
+    }
+    .card-link.live {
+      background: var(--green-dim); color: var(--green);
+      border: 1px solid rgba(74,222,128,.25);
+    }
+    .card-link.live:hover { background: var(--green-mid); }
+    .card-link.repo {
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .card-link.repo:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .card-link.no-deploy {
+      background: rgba(251,191,36,.08); color: #FCD34D;
+      border: 1px solid rgba(251,191,36,.2); cursor: default;
+    }
+    .card-title {
+      font-family: var(--font-display); font-size: 1.2rem;
+      font-weight: 600; margin-bottom: .5rem;
+    }
+    .card-desc { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-bottom: 1.25rem; }
+    .card-features { margin-bottom: 1.25rem; }
+    .card-features-title {
+      font-family: var(--font-mono); font-size: .7rem;
+      color: var(--faint); letter-spacing: .1em; margin-bottom: .5rem;
+    }
+    .card-features ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+    .card-features li {
+      font-size: .85rem; color: var(--muted);
+      display: flex; align-items: flex-start; gap: .5rem;
+    }
+    .card-features li::before { content: '→'; color: var(--green); font-size: .8rem; margin-top: .1rem; flex-shrink: 0; }
+    .card-stack { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .stack-tag {
+      font-family: var(--font-mono); font-size: .7rem;
+      padding: .2rem .55rem; border-radius: 4px;
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .edu-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      padding: 1.5rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px;
+    }
+    .edu-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--green); margin-top: .45rem; flex-shrink: 0;
+    }
+    .edu-year {
+      font-family: var(--font-mono); font-size: .75rem;
+      color: var(--green); margin-bottom: .25rem;
+    }
+    .edu-school {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 1rem; margin-bottom: .25rem;
+    }
+    .edu-degree { color: var(--muted); font-size: .875rem; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 3rem; text-align: center;
+    }
+    .contact-title {
+      font-family: var(--font-display); font-size: 2rem;
+      font-weight: 700; margin-bottom: 1rem;
+    }
+    .contact-desc { color: var(--muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem; text-align: center;
+      color: var(--faint); font-family: var(--font-mono); font-size: .75rem;
+    }
+
+    /* ── FADE IN ── */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      nav { padding: .75rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.25rem 3rem; }
+      section { padding: 4rem 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .card-header { flex-direction: column; }
+      .card-links { flex-direction: row; flex-wrap: wrap; }
+      .contact-wrapper { padding: 2rem 1.25rem; }
+    }
+
+    /* ── HIDDEN LANG ── */
+    [data-lang] { transition: opacity .2s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">jm.dev</span>
+  <ul class="nav-links">
+    <li><a href="#about" data-en="About" data-es="Sobre mí">About</a></li>
+    <li><a href="#projects" data-en="Projects" data-es="Proyectos">Projects</a></li>
+    <li><a href="#education" data-en="Education" data-es="Educación">Education</a></li>
+    <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow" data-en="Hello, world — I'm" data-es="Hola, mundo — soy">Hello, world — I'm</p>
+  <h1 class="hero-name">Juan<br><span>Manuel.</span></h1>
+  <p class="hero-role" data-en="Frontend Developer & Systems Engineering Student" data-es="Desarrollador Frontend & Estudiante de Ingeniería de Sistemas">Frontend Developer & Systems Engineering Student</p>
+  <p class="hero-desc" data-en="I build responsive, accessible interfaces with React, JavaScript and TailwindCSS. Focused on clean code, solid UX, and shipping things that actually work." data-es="Construyo interfaces responsivas y accesibles con React, JavaScript y TailwindCSS. Enfocado en código limpio, buen UX y entregar proyectos que realmente funcionen.">I build responsive, accessible interfaces with React, JavaScript and TailwindCSS. Focused on clean code, solid UX, and shipping things that actually work.</p>
+  <div class="hero-ctas">
+    <a href="#projects" class="btn-primary" data-en="See my work" data-es="Ver mis proyectos">See my work</a>
+    <a href="#contact" class="btn-outline" data-en="Get in touch" data-es="Contáctame">Get in touch</a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="fade-in">
+  <p class="section-label" data-en="01 / ABOUT" data-es="01 / SOBRE MÍ">01 / ABOUT</p>
+  <h2 class="section-title" data-en="Who I am" data-es="Quién soy">Who I am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p data-en="I'm a <strong>Systems and Computer Engineering student</strong> at Universidad Tecnológica de Pereira, Colombia, with a focus on frontend development." data-es="Soy estudiante de <strong>Ingeniería de Sistemas y Computación</strong> en la Universidad Tecnológica de Pereira, con enfoque en desarrollo frontend.">I'm a <strong>Systems and Computer Engineering student</strong> at Universidad Tecnológica de Pereira, Colombia, with a focus on frontend development.</p>
+      <p data-en="I specialize in building responsive applications using <strong>React, JavaScript, and TailwindCSS</strong>, with a strong foundation in clean code and UI/UX principles." data-es="Me especializo en construir aplicaciones responsivas con <strong>React, JavaScript y TailwindCSS</strong>, con una base sólida en código limpio y principios de UI/UX.">I specialize in building responsive applications using <strong>React, JavaScript, and TailwindCSS</strong>, with a strong foundation in clean code and UI/UX principles.</p>
+      <p data-en="Beyond the browser, I have complementary knowledge in Python, C++, MySQL, and basic networking (router/switch configuration, subnetting). Proficient in technical English at a B2 level." data-es="Más allá del navegador, tengo conocimientos complementarios en Python, C++, MySQL y redes básicas (configuración de routers/switches, subnetting). Inglés técnico nivel B2.">Beyond the browser, I have complementary knowledge in Python, C++, MySQL, and basic networking (router/switch configuration, subnetting). Proficient in technical English at a B2 level.</p>
+    </div>
+    <div>
+      <div class="skills-group">
+        <p class="skills-group-label" data-en="LANGUAGES" data-es="LENGUAJES">LANGUAGES</p>
+        <div class="skills-list">
+          <span class="skill-badge">HTML5</span>
+          <span class="skill-badge">CSS3</span>
+          <span class="skill-badge">JavaScript</span>
+          <span class="skill-badge">Python</span>
+          <span class="skill-badge">C++</span>
+          <span class="skill-badge">MySQL</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <p class="skills-group-label" data-en="FRAMEWORKS & TOOLS" data-es="FRAMEWORKS Y HERRAMIENTAS">FRAMEWORKS & TOOLS</p>
+        <div class="skills-list">
+          <span class="skill-badge">React</span>
+          <span class="skill-badge">TailwindCSS</span>
+          <span class="skill-badge">Bootstrap</span>
+          <span class="skill-badge">Git</span>
+          <span class="skill-badge">GitHub</span>
+          <span class="skill-badge">VS Code</span>
+          <span class="skill-badge">Figma</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <p class="skills-group-label">NETWORKING</p>
+        <div class="skills-list">
+          <span class="skill-badge" data-en="Router/Switch config" data-es="Config. Router/Switch">Router/Switch config</span>
+          <span class="skill-badge">Subnetting</span>
+          <span class="skill-badge">Troubleshooting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="fade-in">
+  <p class="section-label" data-en="02 / PROJECTS" data-es="02 / PROYECTOS">02 / PROJECTS</p>
+  <h2 class="section-title" data-en="Things I've built" data-es="Cosas que he construido">Things I've built</h2>
+  <div class="projects-grid">
+
+    <!-- ToDo App -->
+    <div class="project-card">
+      <div class="card-accent" style="background: linear-gradient(to right, #4ADE80, #22c55e);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-icon">📝</span>
+          <div class="card-links">
+            <a href="https://do-it-website-lyart.vercel.app/" target="_blank" class="card-link live">
+              ↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span>
+            </a>
+          </div>
+        </div>
+        <h3 class="card-title">ToDo App — Task Manager</h3>
+        <p class="card-desc" data-en="A sleek task management application with intuitive card-based UI, priority levels, and modal-based editing. Built entirely with React hooks and no external state library." data-es="Aplicación de gestión de tareas con UI basada en cards, niveles de prioridad y edición modal. Construida con React hooks sin librería de estado externa.">A sleek task management application with intuitive card-based UI, priority levels, and modal-based editing. Built entirely with React hooks and no external state library.</p>
+        <div class="card-features">
+          <p class="card-features-title" data-en="KEY FEATURES" data-es="CARACTERÍSTICAS">KEY FEATURES</p>
+          <ul>
+            <li data-en="Rectangular task cards with side-panel form for creation" data-es="Cards de tareas con panel lateral para creación">Rectangular task cards with side-panel form for creation</li>
+            <li data-en="Detail modal with edit, delete and cancel actions" data-es="Modal de detalle con acciones de editar, eliminar y cancelar">Detail modal with edit, delete and cancel actions</li>
+            <li data-en="Batch delete with multi-select checkboxes" data-es="Eliminación masiva con selección múltiple">Batch delete with multi-select checkboxes</li>
+            <li data-en="Fully responsive, mobile-friendly layout" data-es="Layout completamente responsivo y mobile-friendly">Fully responsive, mobile-friendly layout</li>
+          </ul>
+        </div>
+        <div class="card-stack">
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">JavaScript ES6+</span>
+          <span class="stack-tag">TailwindCSS</span>
+          <span class="stack-tag">Hooks</span>
+          <span class="stack-tag">Vite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weatherly -->
+    <div class="project-card">
+      <div class="card-accent" style="background: linear-gradient(to right, #00D4FF, #3B82F6);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-icon">🌐</span>
+          <div class="card-links">
+            <a href="https://weatherly-one-sigma.vercel.app/" target="_blank" class="card-link live">
+              ↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span>
+            </a>
+          </div>
+        </div>
+        <h3 class="card-title">Weatherly — Weather App</h3>
+        <p class="card-desc" data-en="Real-time weather app for any city in the world. Features dynamic city photo backgrounds, glassmorphism UI, hourly and 7-day forecasts, and a live sun position indicator — all with zero backend." data-es="App de clima en tiempo real para cualquier ciudad del mundo. Fondos con fotos dinámicas de la ciudad, UI glassmorphism, pronósticos por hora y 7 días, e indicador de posición solar animado — sin backend propio.">Real-time weather app for any city in the world. Features dynamic city photo backgrounds, glassmorphism UI, hourly and 7-day forecasts, and a live sun position indicator — all with zero backend.</p>
+        <div class="card-features">
+          <p class="card-features-title" data-en="KEY FEATURES" data-es="CARACTERÍSTICAS">KEY FEATURES</p>
+          <ul>
+            <li data-en="City search with autocomplete (debounced)" data-es="Búsqueda de ciudades con autocompletado (debounced)">City search with autocomplete (debounced)</li>
+            <li data-en="Feels like, UV index, wind compass, visibility" data-es="Sensación térmica, índice UV, brújula de viento, visibilidad">Feels like, UV index, wind compass, visibility</li>
+            <li data-en="Animated sunrise/sunset timeline with live sun position" data-es="Línea animada amanecer/atardecer con posición solar en vivo">Animated sunrise/sunset timeline with live sun position</li>
+            <li data-en="City photo from Pexels with smooth fade-in" data-es="Foto de la ciudad desde Pexels con fade-in suave">City photo from Pexels with smooth fade-in</li>
+          </ul>
+        </div>
+        <div class="card-stack">
+          <span class="stack-tag">React 19</span>
+          <span class="stack-tag">JavaScript ES6+</span>
+          <span class="stack-tag">TailwindCSS</span>
+          <span class="stack-tag">Vite</span>
+          <span class="stack-tag">Open-Meteo API</span>
+          <span class="stack-tag">Pexels API</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual API Builder -->
+    <div class="project-card">
+      <div class="card-accent" style="background: linear-gradient(to right, #A855F7, #6366F1);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-icon">⚡</span>
+          <div class="card-links">
+            <a href="https://github.com/JuanManuel1904/API-Builder.git" target="_blank" class="card-link repo">
+              ⌥ GitHub
+            </a>
+            <span class="card-link no-deploy" title="Not deployed yet">
+              ⚠ <span data-en="Not deployed" data-es="Sin despliegue">Not deployed</span>
+            </span>
+          </div>
+        </div>
+        <h3 class="card-title">Visual API Builder</h3>
+        <p class="card-desc" data-en="A full-stack low-code platform to design, document and export REST APIs through a drag-and-drop visual canvas — no backend code required. Generates a complete NestJS project, Prisma schema, OpenAPI spec and Docker setup." data-es="Plataforma full-stack low-code para diseñar, documentar y exportar APIs REST mediante un canvas visual de arrastrar y soltar. Genera un proyecto NestJS completo, schema Prisma, spec OpenAPI y configuración Docker.">A full-stack low-code platform to design, document and export REST APIs through a drag-and-drop visual canvas — no backend code required. Generates a complete NestJS project, Prisma schema, OpenAPI spec and Docker setup.</p>
+        <div class="card-features">
+          <p class="card-features-title" data-en="KEY FEATURES" data-es="CARACTERÍSTICAS">KEY FEATURES</p>
+          <ul>
+            <li data-en="Drag-and-drop node editor powered by React Flow" data-es="Editor de nodos drag-and-drop con React Flow">Drag-and-drop node editor powered by React Flow</li>
+            <li data-en="Entity designer and REST endpoint builder" data-es="Diseñador de entidades y constructor de endpoints REST">Entity designer and REST endpoint builder</li>
+            <li data-en="Code generation: NestJS, Prisma, OpenAPI, Postman, Docker" data-es="Generación de código: NestJS, Prisma, OpenAPI, Postman, Docker">Code generation: NestJS, Prisma, OpenAPI, Postman, Docker</li>
+            <li data-en="JWT auth with role-based access (admin / developer / viewer)" data-es="Auth JWT con roles (admin / desarrollador / viewer)">JWT auth with role-based access (admin / developer / viewer)</li>
+          </ul>
+        </div>
+        <div class="card-stack">
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">TypeScript</span>
+          <span class="stack-tag">React Flow</span>
+          <span class="stack-tag">Zustand</span>
+          <span class="stack-tag">NestJS</span>
+          <span class="stack-tag">Prisma</span>
+          <span class="stack-tag">PostgreSQL</span>
+          <span class="stack-tag">Docker</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="fade-in">
+  <p class="section-label" data-en="03 / EDUCATION" data-es="03 / EDUCACIÓN">03 / EDUCATION</p>
+  <h2 class="section-title" data-en="My background" data-es="Mi formación">My background</h2>
+  <div class="edu-list">
+    <div class="edu-item">
+      <div class="edu-dot"></div>
+      <div>
+        <p class="edu-year">2021 — <span data-en="Present" data-es="Presente">Present</span></p>
+        <p class="edu-school" data-en="Universidad Tecnológica de Pereira" data-es="Universidad Tecnológica de Pereira">Universidad Tecnológica de Pereira</p>
+        <p class="edu-degree" data-en="Systems and Computer Engineering — In progress" data-es="Ingeniería de Sistemas y Computación — En curso">Systems and Computer Engineering — In progress</p>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-dot" style="background: var(--faint);"></div>
+      <div>
+        <p class="edu-year">2021</p>
+        <p class="edu-school" data-en="Institución Educativa San José" data-es="Institución Educativa San José">Institución Educativa San José</p>
+        <p class="edu-degree" data-en="Academic Bachelor's Degree" data-es="Bachillerato Académico">Academic Bachelor's Degree</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="fade-in">
+  <div class="contact-wrapper">
+    <p class="section-label" style="justify-content:center;margin-bottom:1rem;" data-en="04 / CONTACT" data-es="04 / CONTACTO">04 / CONTACT</p>
+    <h2 class="contact-title" data-en="Let's build something." data-es="Construyamos algo juntos.">Let's build something.</h2>
+    <p class="contact-desc" data-en="Open to freelance projects, internships, and junior developer roles. Feel free to reach out." data-es="Disponible para proyectos freelance, pasantías y posiciones junior. No dudes en escribirme.">Open to freelance projects, internships, and junior developer roles. Feel free to reach out.</p>
+    <div class="contact-links">
+      <a href="mailto:juanmanuel@example.com" class="btn-primary" data-en="Send an email" data-es="Enviar email">Send an email</a>
+      <a href="https://github.com/JuanManuel1904" target="_blank" class="btn-outline">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span data-en="Designed & built by Juan Manuel — 2025" data-es="Diseñado y construido por Juan Manuel — 2025">Designed & built by Juan Manuel — 2025</span>
+</footer>
+
+<script>
+  // ── LANGUAGE TOGGLE ──
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+    });
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) el.innerHTML = val;
+    });
+    document.documentElement.lang = lang;
+  }
+
+  // ── SCROLL FADE IN ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── ACTIVE NAV ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--green)' : '';
+    });
+  });
+</script>
+</body>
+</html>
