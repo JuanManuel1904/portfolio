@@ -36,12 +36,10 @@
       overflow-x: hidden;
     }
 
-    /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
 
-    /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -50,248 +48,92 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo {
-      font-family: var(--font-mono);
-      font-size: .875rem;
-      color: var(--green);
-      letter-spacing: .05em;
-    }
+    .nav-logo { font-family: var(--font-mono); font-size: .875rem; color: var(--green); letter-spacing: .05em; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: .875rem; font-family: var(--font-body);
-      transition: color .2s;
-    }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .875rem; font-family: var(--font-body); transition: color .2s; }
     .nav-links a:hover { color: var(--green); }
 
-    .lang-toggle {
-      display: flex; gap: .25rem;
-      background: var(--surface); border-radius: 6px; padding: .25rem;
-    }
-    .lang-btn {
-      font-family: var(--font-mono); font-size: .75rem;
-      padding: .25rem .6rem; border-radius: 4px; border: none;
-      cursor: pointer; transition: all .2s;
-      color: var(--muted); background: transparent;
-    }
+    .lang-toggle { display: flex; gap: .25rem; background: var(--surface); border-radius: 6px; padding: .25rem; }
+    .lang-btn { font-family: var(--font-mono); font-size: .75rem; padding: .25rem .6rem; border-radius: 4px; border: none; cursor: pointer; transition: all .2s; color: var(--muted); background: transparent; }
     .lang-btn.active { background: var(--green); color: #0A0F1A; font-weight: 600; }
 
-    /* ── HERO ── */
     .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 8rem 2rem 4rem;
-      max-width: 900px; margin: 0 auto;
-      position: relative;
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 2rem 4rem; max-width: 900px; margin: 0 auto; position: relative;
     }
-    .hero-eyebrow {
-      font-family: var(--font-mono); font-size: .8rem;
-      color: var(--green); letter-spacing: .15em;
-      margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: .75rem;
-    }
-    .hero-eyebrow::before {
-      content: ''; display: block; width: 32px; height: 1px;
-      background: var(--green);
-    }
-    .hero-name {
-      font-family: var(--font-display); font-size: clamp(3rem, 8vw, 5.5rem);
-      font-weight: 700; line-height: 1.05; letter-spacing: -.03em;
-      color: var(--text); margin-bottom: .5rem;
-    }
+    .hero-eyebrow { font-family: var(--font-mono); font-size: .8rem; color: var(--green); letter-spacing: .15em; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--green); }
+    .hero-name { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -.03em; color: var(--text); margin-bottom: .5rem; }
     .hero-name span { color: var(--green); }
-    .hero-role {
-      font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem);
-      font-weight: 300; color: var(--muted); margin-bottom: 2rem;
-    }
-    .hero-desc {
-      font-size: 1rem; color: var(--muted); max-width: 560px;
-      line-height: 1.75; margin-bottom: 2.5rem;
-    }
+    .hero-role { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 300; color: var(--muted); margin-bottom: 2rem; }
+    .hero-desc { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.75; margin-bottom: 2.5rem; }
     .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--green); color: #0A0F1A;
-      font-family: var(--font-display); font-weight: 600;
-      padding: .75rem 1.75rem; border-radius: 8px;
-      text-decoration: none; font-size: .9rem;
-      transition: all .2s; border: none; cursor: pointer;
-    }
+    .btn-primary { background: var(--green); color: #0A0F1A; font-family: var(--font-display); font-weight: 600; padding: .75rem 1.75rem; border-radius: 8px; text-decoration: none; font-size: .9rem; transition: all .2s; border: none; cursor: pointer; }
     .btn-primary:hover { background: #22c55e; transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent; color: var(--text);
-      font-family: var(--font-display); font-weight: 500;
-      padding: .75rem 1.75rem; border-radius: 8px;
-      text-decoration: none; font-size: .9rem;
-      border: 1px solid var(--border);
-      transition: all .2s;
-    }
+    .btn-outline { background: transparent; color: var(--text); font-family: var(--font-display); font-weight: 500; padding: .75rem 1.75rem; border-radius: 8px; text-decoration: none; font-size: .9rem; border: 1px solid var(--border); transition: all .2s; }
     .btn-outline:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
 
-    /* Grid dots background */
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(rgba(74,222,128,.06) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
-    }
-    .hero-glow {
-      position: absolute; top: 20%; right: -10%;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(74,222,128,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(74,222,128,.06) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+    .hero-glow { position: absolute; top: 20%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(74,222,128,.08) 0%, transparent 70%); pointer-events: none; }
 
-    /* ── SECTIONS ── */
     section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
-    .section-label {
-      font-family: var(--font-mono); font-size: .75rem;
-      color: var(--green); letter-spacing: .15em;
-      margin-bottom: .75rem;
-      display: flex; align-items: center; gap: .75rem;
-    }
-    .section-label::after {
-      content: ''; flex: 1; height: 1px;
-      background: linear-gradient(to right, var(--border), transparent);
-    }
-    .section-title {
-      font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700; letter-spacing: -.02em; margin-bottom: 3rem;
-    }
+    .section-label { font-family: var(--font-mono); font-size: .75rem; color: var(--green); letter-spacing: .15em; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 3rem; }
 
-    /* ── ABOUT ── */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
     .about-text { color: var(--muted); line-height: 1.8; }
     .about-text p + p { margin-top: 1rem; }
     .about-text strong { color: var(--text); font-weight: 500; }
-
     .skills-group { margin-bottom: 1.5rem; }
-    .skills-group-label {
-      font-family: var(--font-mono); font-size: .7rem;
-      color: var(--faint); letter-spacing: .1em;
-      margin-bottom: .6rem;
-    }
+    .skills-group-label { font-family: var(--font-mono); font-size: .7rem; color: var(--faint); letter-spacing: .1em; margin-bottom: .6rem; }
     .skills-list { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .skill-badge {
-      font-family: var(--font-mono); font-size: .75rem;
-      padding: .25rem .65rem; border-radius: 4px;
-      background: var(--surface2); color: var(--green);
-      border: 1px solid rgba(74,222,128,.2);
-    }
+    .skill-badge { font-family: var(--font-mono); font-size: .75rem; padding: .25rem .65rem; border-radius: 4px; background: var(--surface2); color: var(--green); border: 1px solid rgba(74,222,128,.2); }
 
-    /* ── PROJECTS ── */
     .projects-grid { display: grid; gap: 1.5rem; }
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all .25s;
-      position: relative;
-    }
-    .project-card:hover {
-      border-color: rgba(74,222,128,.3);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.4);
-    }
-    .card-accent {
-      height: 3px; width: 100%;
-    }
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all .25s; position: relative; }
+    .project-card:hover { border-color: rgba(74,222,128,.3); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .card-accent { height: 3px; width: 100%; }
     .card-body { padding: 1.75rem; }
     .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
     .card-icon { font-size: 1.5rem; }
     .card-links { display: flex; gap: .5rem; margin-left: auto; }
-    .card-link {
-      display: flex; align-items: center; gap: .35rem;
-      font-family: var(--font-mono); font-size: .7rem;
-      padding: .35rem .7rem; border-radius: 6px;
-      text-decoration: none; transition: all .2s;
-      white-space: nowrap;
-    }
-    .card-link.live {
-      background: var(--green-dim); color: var(--green);
-      border: 1px solid rgba(74,222,128,.25);
-    }
+    .card-link { display: flex; align-items: center; gap: .35rem; font-family: var(--font-mono); font-size: .7rem; padding: .35rem .7rem; border-radius: 6px; text-decoration: none; transition: all .2s; white-space: nowrap; }
+    .card-link.live { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,.25); }
     .card-link.live:hover { background: var(--green-mid); }
-    .card-link.repo {
-      background: var(--surface2); color: var(--muted);
-      border: 1px solid var(--border);
-    }
+    .card-link.repo { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
     .card-link.repo:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
-    .card-link.no-deploy {
-      background: rgba(251,191,36,.08); color: #FCD34D;
-      border: 1px solid rgba(251,191,36,.2); cursor: default;
-    }
-    .card-title {
-      font-family: var(--font-display); font-size: 1.2rem;
-      font-weight: 600; margin-bottom: .5rem;
-    }
+    .card-link.no-deploy { background: rgba(251,191,36,.08); color: #FCD34D; border: 1px solid rgba(251,191,36,.2); cursor: default; }
+    .card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: .5rem; }
     .card-desc { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-bottom: 1.25rem; }
     .card-features { margin-bottom: 1.25rem; }
-    .card-features-title {
-      font-family: var(--font-mono); font-size: .7rem;
-      color: var(--faint); letter-spacing: .1em; margin-bottom: .5rem;
-    }
+    .card-features-title { font-family: var(--font-mono); font-size: .7rem; color: var(--faint); letter-spacing: .1em; margin-bottom: .5rem; }
     .card-features ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
-    .card-features li {
-      font-size: .85rem; color: var(--muted);
-      display: flex; align-items: flex-start; gap: .5rem;
-    }
+    .card-features li { font-size: .85rem; color: var(--muted); display: flex; align-items: flex-start; gap: .5rem; }
     .card-features li::before { content: '→'; color: var(--green); font-size: .8rem; margin-top: .1rem; flex-shrink: 0; }
     .card-stack { display: flex; flex-wrap: wrap; gap: .35rem; }
-    .stack-tag {
-      font-family: var(--font-mono); font-size: .7rem;
-      padding: .2rem .55rem; border-radius: 4px;
-      background: var(--surface2); color: var(--muted);
-      border: 1px solid var(--border);
-    }
+    .stack-tag { font-family: var(--font-mono); font-size: .7rem; padding: .2rem .55rem; border-radius: 4px; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
 
-    /* ── EDUCATION ── */
+    /* NEW: badge WIP */
+    .card-link.wip { background: rgba(99,102,241,.1); color: #818cf8; border: 1px solid rgba(99,102,241,.25); cursor: default; }
+
     .edu-list { display: flex; flex-direction: column; gap: 1.5rem; }
-    .edu-item {
-      display: flex; gap: 1.5rem; align-items: flex-start;
-      padding: 1.5rem; background: var(--surface);
-      border: 1px solid var(--border); border-radius: 12px;
-    }
-    .edu-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--green); margin-top: .45rem; flex-shrink: 0;
-    }
-    .edu-year {
-      font-family: var(--font-mono); font-size: .75rem;
-      color: var(--green); margin-bottom: .25rem;
-    }
-    .edu-school {
-      font-family: var(--font-display); font-weight: 600;
-      font-size: 1rem; margin-bottom: .25rem;
-    }
+    .edu-item { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+    .edu-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); margin-top: .45rem; flex-shrink: 0; }
+    .edu-year { font-family: var(--font-mono); font-size: .75rem; color: var(--green); margin-bottom: .25rem; }
+    .edu-school { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: .25rem; }
     .edu-degree { color: var(--muted); font-size: .875rem; }
 
-    /* ── CONTACT ── */
-    .contact-wrapper {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 3rem; text-align: center;
-    }
-    .contact-title {
-      font-family: var(--font-display); font-size: 2rem;
-      font-weight: 700; margin-bottom: 1rem;
-    }
+    .contact-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 3rem; text-align: center; }
+    .contact-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
     .contact-desc { color: var(--muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto; }
     .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem; text-align: center;
-      color: var(--faint); font-family: var(--font-mono); font-size: .75rem;
-    }
+    footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--faint); font-family: var(--font-mono); font-size: .75rem; }
 
-    /* ── FADE IN ── */
     .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
       nav { padding: .75rem 1.25rem; }
       .nav-links { display: none; }
@@ -303,13 +145,11 @@
       .contact-wrapper { padding: 2rem 1.25rem; }
     }
 
-    /* ── HIDDEN LANG ── */
     [data-lang] { transition: opacity .2s; }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <span class="nav-logo">jm.dev</span>
   <ul class="nav-links">
@@ -324,7 +164,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-glow"></div>
   <p class="hero-eyebrow" data-en="Hello, world — I'm" data-es="Hola, mundo — soy">Hello, world — I'm</p>
@@ -337,7 +176,6 @@
   </div>
 </div>
 
-<!-- ABOUT -->
 <section id="about" class="fade-in">
   <p class="section-label" data-en="01 / ABOUT" data-es="01 / SOBRE MÍ">01 / ABOUT</p>
   <h2 class="section-title" data-en="Who I am" data-es="Quién soy">Who I am</h2>
@@ -351,43 +189,70 @@
       <div class="skills-group">
         <p class="skills-group-label" data-en="LANGUAGES" data-es="LENGUAJES">LANGUAGES</p>
         <div class="skills-list">
-          <span class="skill-badge">HTML5</span>
-          <span class="skill-badge">CSS3</span>
-          <span class="skill-badge">JavaScript</span>
-          <span class="skill-badge">Python</span>
-          <span class="skill-badge">C++</span>
-          <span class="skill-badge">MySQL</span>
+          <span class="skill-badge">HTML5</span><span class="skill-badge">CSS3</span><span class="skill-badge">JavaScript</span><span class="skill-badge">Python</span><span class="skill-badge">C++</span><span class="skill-badge">MySQL</span>
         </div>
       </div>
       <div class="skills-group">
         <p class="skills-group-label" data-en="FRAMEWORKS & TOOLS" data-es="FRAMEWORKS Y HERRAMIENTAS">FRAMEWORKS & TOOLS</p>
         <div class="skills-list">
-          <span class="skill-badge">React</span>
-          <span class="skill-badge">TailwindCSS</span>
-          <span class="skill-badge">Bootstrap</span>
-          <span class="skill-badge">Git</span>
-          <span class="skill-badge">GitHub</span>
-          <span class="skill-badge">VS Code</span>
-          <span class="skill-badge">Figma</span>
+          <span class="skill-badge">React</span><span class="skill-badge">TailwindCSS</span><span class="skill-badge">FastAPI</span><span class="skill-badge">Bootstrap</span><span class="skill-badge">Git</span><span class="skill-badge">GitHub</span><span class="skill-badge">VS Code</span><span class="skill-badge">Figma</span><span class="skill-badge">Docker</span>
         </div>
       </div>
       <div class="skills-group">
         <p class="skills-group-label">NETWORKING</p>
         <div class="skills-list">
-          <span class="skill-badge" data-en="Router/Switch config" data-es="Config. Router/Switch">Router/Switch config</span>
-          <span class="skill-badge">Subnetting</span>
-          <span class="skill-badge">Troubleshooting</span>
+          <span class="skill-badge" data-en="Router/Switch config" data-es="Config. Router/Switch">Router/Switch config</span><span class="skill-badge">Subnetting</span><span class="skill-badge">Troubleshooting</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects" class="fade-in">
   <p class="section-label" data-en="02 / PROJECTS" data-es="02 / PROYECTOS">02 / PROJECTS</p>
   <h2 class="section-title" data-en="Things I've built" data-es="Cosas que he construido">Things I've built</h2>
   <div class="projects-grid">
+
+    <!-- ── CRYPTODASH (FIRST / FEATURED) ── -->
+    <div class="project-card" style="border-color: rgba(6,182,212,.2);">
+      <div class="card-accent" style="background: linear-gradient(to right, #06b6d4, #3b82f6, #06b6d4);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <span style="font-size:1.4rem;">📈</span>
+            <span style="font-family:var(--font-mono);font-size:.65rem;padding:.2rem .6rem;border-radius:4px;background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.25);" data-en="Full-stack" data-es="Full-stack">Full-stack</span>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/JuanManuel1904" target="_blank" class="card-link repo">⌥ GitHub</a>
+            <a href="https://cryptodash-frontend.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+          </div>
+        </div>
+        <h3 class="card-title">CryptoDash — Real-time Crypto Dashboard</h3>
+        <p class="card-desc" data-en="Full-stack dashboard that streams live cryptocurrency prices via WebSockets. Built with a FastAPI backend that polls CoinGecko every 10 seconds and broadcasts to all connected clients simultaneously. Includes coin search across the entire CoinGecko catalog, interactive price charts, and dark-first UI." data-es="Dashboard full-stack que transmite precios de criptomonedas en tiempo real por WebSockets. Backend FastAPI consulta CoinGecko cada 10 segundos y hace broadcast a todos los clientes conectados. Incluye búsqueda en todo el catálogo de CoinGecko, gráficos de precios interactivos e interfaz dark-first.">Full-stack dashboard that streams live cryptocurrency prices via WebSockets. Built with a FastAPI backend that polls CoinGecko every 10 seconds and broadcasts to all connected clients simultaneously. Includes coin search across the entire CoinGecko catalog, interactive price charts, and dark-first UI.</p>
+        <div class="card-features">
+          <p class="card-features-title" data-en="KEY FEATURES" data-es="CARACTERÍSTICAS">KEY FEATURES</p>
+          <ul>
+            <li data-en="Real-time WebSocket broadcast — prices update every 10 seconds across all clients" data-es="Broadcast WebSocket en tiempo real — precios actualizados cada 10s en todos los clientes">Real-time WebSocket broadcast — prices update every 10 seconds across all clients</li>
+            <li data-en="Search any crypto by name or symbol across the full CoinGecko catalog (+10,000 coins)" data-es="Búsqueda de cualquier crypto por nombre o símbolo en todo el catálogo de CoinGecko (+10,000 monedas)">Search any crypto by name or symbol across the full CoinGecko catalog (+10,000 coins)</li>
+            <li data-en="Interactive line chart with 60-point price history and custom tooltip" data-es="Gráfico de línea interactivo con historial de 60 puntos y tooltip personalizado">Interactive line chart with 60-point price history and custom tooltip</li>
+            <li data-en="Price flash animation (green/red) on every tick update" data-es="Animación de flash (verde/rojo) en cada actualización de precio">Price flash animation (green/red) on every tick update</li>
+            <li data-en="Dockerized FastAPI backend with auto-reconnecting WebSocket on the client" data-es="Backend FastAPI dockerizado con reconexión automática del WebSocket en el cliente">Dockerized FastAPI backend with auto-reconnecting WebSocket on the client</li>
+          </ul>
+        </div>
+        <div class="card-stack">
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">Vite</span>
+          <span class="stack-tag">TailwindCSS</span>
+          <span class="stack-tag">Zustand</span>
+          <span class="stack-tag">Recharts</span>
+          <span class="stack-tag">FastAPI</span>
+          <span class="stack-tag">WebSockets</span>
+          <span class="stack-tag">CoinGecko API</span>
+          <span class="stack-tag">Docker</span>
+          <span class="stack-tag">Vercel + Render</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ToDo App -->
     <div class="project-card">
@@ -395,9 +260,7 @@
       <div class="card-body">
         <div class="card-header">
           <div class="card-links">
-            <a href="https://do-it-website-lyart.vercel.app/" target="_blank" class="card-link live">
-              ↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span>
-            </a>
+            <a href="https://do-it-website-lyart.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
           </div>
         </div>
         <h3 class="card-title">ToDo App — Task Manager</h3>
@@ -412,11 +275,7 @@
           </ul>
         </div>
         <div class="card-stack">
-          <span class="stack-tag">React</span>
-          <span class="stack-tag">JavaScript ES6+</span>
-          <span class="stack-tag">TailwindCSS</span>
-          <span class="stack-tag">Hooks</span>
-          <span class="stack-tag">Vite</span>
+          <span class="stack-tag">React</span><span class="stack-tag">JavaScript ES6+</span><span class="stack-tag">TailwindCSS</span><span class="stack-tag">Hooks</span><span class="stack-tag">Vite</span>
         </div>
       </div>
     </div>
@@ -427,9 +286,7 @@
       <div class="card-body">
         <div class="card-header">
           <div class="card-links">
-            <a href="https://weatherly-one-sigma.vercel.app/" target="_blank" class="card-link live">
-              ↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span>
-            </a>
+            <a href="https://weatherly-one-sigma.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
           </div>
         </div>
         <h3 class="card-title">Weatherly — Weather App</h3>
@@ -440,30 +297,23 @@
             <li data-en="City search with autocomplete (debounced)" data-es="Búsqueda de ciudades con autocompletado (debounced)">City search with autocomplete (debounced)</li>
             <li data-en="Feels like, UV index, wind compass, visibility" data-es="Sensación térmica, índice UV, brújula de viento, visibilidad">Feels like, UV index, wind compass, visibility</li>
             <li data-en="Animated sunrise/sunset timeline with live sun position" data-es="Línea animada amanecer/atardecer con posición solar en vivo">Animated sunrise/sunset timeline with live sun position</li>
-            <li data-en="City photo from Pexels with smooth fade-in" data-es="Foto de la ciudad desde Pexels con fade-in suave">City photo from Pexels with smooth fade-in</li>
+            <li data-en="City photo from Pexels with smooth fade-in" data-es="Foto de la ciudad desde Pexels con fade-in suave">City photo from Pexels con fade-in suave">City photo from Pexels with smooth fade-in</li>
           </ul>
         </div>
         <div class="card-stack">
-          <span class="stack-tag">React 19</span>
-          <span class="stack-tag">JavaScript ES6+</span>
-          <span class="stack-tag">TailwindCSS</span>
-          <span class="stack-tag">Vite</span>
-          <span class="stack-tag">Open-Meteo API</span>
-          <span class="stack-tag">Pexels API</span>
+          <span class="stack-tag">React 19</span><span class="stack-tag">JavaScript ES6+</span><span class="stack-tag">TailwindCSS</span><span class="stack-tag">Vite</span><span class="stack-tag">Open-Meteo API</span><span class="stack-tag">Pexels API</span>
         </div>
       </div>
     </div>
 
-    <!-- URL Shortener -->
+    <!-- Shrt.ly -->
     <div class="project-card">
       <div class="card-accent" style="background: linear-gradient(to right, #E8623D, #C44E2D);"></div>
       <div class="card-body">
         <div class="card-header">
           <span class="card-icon">🎟️</span>
           <div class="card-links">
-            <a href="https://url-shortener-nine-xi-26.vercel.app" target="_blank" class="card-link live">
-              ↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span>
-            </a>
+            <a href="https://url-shortener-nine-xi-26.vercel.app" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
           </div>
         </div>
         <h3 class="card-title">Shrt.ly — URL Shortener</h3>
@@ -478,11 +328,7 @@
           </ul>
         </div>
         <div class="card-stack">
-          <span class="stack-tag">React</span>
-          <span class="stack-tag">JavaScript ES6+</span>
-          <span class="stack-tag">TailwindCSS</span>
-          <span class="stack-tag">Vite</span>
-          <span class="stack-tag">localStorage</span>
+          <span class="stack-tag">React</span><span class="stack-tag">JavaScript ES6+</span><span class="stack-tag">TailwindCSS</span><span class="stack-tag">Vite</span><span class="stack-tag">localStorage</span>
         </div>
       </div>
     </div>
@@ -493,12 +339,8 @@
       <div class="card-body">
         <div class="card-header">
           <div class="card-links">
-            <a href="https://github.com/JuanManuel1904/API-Builder.git" target="_blank" class="card-link repo">
-              ⌥ GitHub
-            </a>
-            <span class="card-link no-deploy" title="Not deployed yet">
-              ⚠ <span data-en="Not deployed" data-es="Sin despliegue">Not deployed</span>
-            </span>
+            <a href="https://github.com/JuanManuel1904/API-Builder.git" target="_blank" class="card-link repo">⌥ GitHub</a>
+            <span class="card-link no-deploy" data-en="⚠ Not deployed" data-es="⚠ Sin despliegue">⚠ Not deployed</span>
           </div>
         </div>
         <h3 class="card-title">Visual API Builder</h3>
@@ -513,14 +355,7 @@
           </ul>
         </div>
         <div class="card-stack">
-          <span class="stack-tag">React</span>
-          <span class="stack-tag">TypeScript</span>
-          <span class="stack-tag">React Flow</span>
-          <span class="stack-tag">Zustand</span>
-          <span class="stack-tag">NestJS</span>
-          <span class="stack-tag">Prisma</span>
-          <span class="stack-tag">PostgreSQL</span>
-          <span class="stack-tag">Docker</span>
+          <span class="stack-tag">React</span><span class="stack-tag">TypeScript</span><span class="stack-tag">React Flow</span><span class="stack-tag">Zustand</span><span class="stack-tag">NestJS</span><span class="stack-tag">Prisma</span><span class="stack-tag">PostgreSQL</span><span class="stack-tag">Docker</span>
         </div>
       </div>
     </div>
@@ -528,7 +363,6 @@
   </div>
 </section>
 
-<!-- EDUCATION -->
 <section id="education" class="fade-in">
   <p class="section-label" data-en="03 / EDUCATION" data-es="03 / EDUCACIÓN">03 / EDUCATION</p>
   <h2 class="section-title" data-en="My background" data-es="Mi formación">My background</h2>
@@ -537,7 +371,7 @@
       <div class="edu-dot"></div>
       <div>
         <p class="edu-year">2021 — <span data-en="Present" data-es="Presente">Present</span></p>
-        <p class="edu-school" data-en="Universidad Tecnológica de Pereira" data-es="Universidad Tecnológica de Pereira">Universidad Tecnológica de Pereira</p>
+        <p class="edu-school">Universidad Tecnológica de Pereira</p>
         <p class="edu-degree" data-en="Systems and Computer Engineering — In progress" data-es="Ingeniería de Sistemas y Computación — En curso">Systems and Computer Engineering — In progress</p>
       </div>
     </div>
@@ -545,14 +379,13 @@
       <div class="edu-dot" style="background: var(--faint);"></div>
       <div>
         <p class="edu-year">2021</p>
-        <p class="edu-school" data-en="Institución Educativa San José" data-es="Institución Educativa San José">Institución Educativa San José</p>
+        <p class="edu-school">Institución Educativa San José</p>
         <p class="edu-degree" data-en="Academic Bachelor's Degree" data-es="Bachillerato Académico">Academic Bachelor's Degree</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="fade-in">
   <div class="contact-wrapper">
     <p class="section-label" style="justify-content:center;margin-bottom:1rem;" data-en="04 / CONTACT" data-es="04 / CONTACTO">04 / CONTACT</p>
@@ -566,14 +399,10 @@
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-</footer>
+<footer></footer>
 
 <script>
-  // ── LANGUAGE TOGGLE ──
   let currentLang = 'en';
-
   function setLang(lang) {
     currentLang = lang;
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -586,13 +415,11 @@
     document.documentElement.lang = lang;
   }
 
-  // ── SCROLL FADE IN ──
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // ── ACTIVE NAV ──
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
   window.addEventListener('scroll', () => {
