@@ -11,16 +11,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0A0F1A;
-      --surface:   #111827;
-      --surface2:  #1A2235;
+      --bg:        #0C0F14;
+      --surface:   #131720;
+      --surface2:  #1B2030;
       --border:    rgba(255,255,255,0.07);
-      --green:     #4ADE80;
-      --green-dim: rgba(74,222,128,0.12);
-      --green-mid: rgba(74,222,128,0.25);
-      --text:      #F0F4FF;
-      --muted:     #94A3B8;
-      --faint:     #64748B;
+      --accent:    #4D78C8;
+      --accent-dim: rgba(77,120,200,0.10);
+      --accent-mid: rgba(77,120,200,0.20);
+      --text:      #D8E0EE;
+      --muted:     #8393AA;
+      --faint:     #53617A;
       --font-display: 'Space Grotesk', sans-serif;
       --font-body:    'Inter', sans-serif;
       --font-mono:    'JetBrains Mono', monospace;
@@ -36,120 +36,356 @@
       overflow-x: hidden;
     }
 
-    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 2px; }
 
+    /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(10,15,26,0.85);
-      backdrop-filter: blur(12px);
+      padding: 1rem 2.5rem;
+      background: rgba(12,15,20,0.90);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { font-family: var(--font-mono); font-size: .875rem; color: var(--green); letter-spacing: .05em; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: .875rem; font-family: var(--font-body); transition: color .2s; }
-    .nav-links a:hover { color: var(--green); }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: .02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.25rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .85rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      letter-spacing: .01em;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
 
-    .lang-toggle { display: flex; gap: .25rem; background: var(--surface); border-radius: 6px; padding: .25rem; }
-    .lang-btn { font-family: var(--font-mono); font-size: .75rem; padding: .25rem .6rem; border-radius: 4px; border: none; cursor: pointer; transition: all .2s; color: var(--muted); background: transparent; }
-    .lang-btn.active { background: var(--green); color: #0A0F1A; font-weight: 600; }
+    .lang-toggle { display: flex; gap: .2rem; background: var(--surface2); border-radius: 6px; padding: .2rem; }
+    .lang-btn {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      padding: .25rem .55rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--muted);
+      background: transparent;
+    }
+    .lang-btn.active { background: var(--accent); color: #fff; font-weight: 600; }
 
+    /* ── HERO ── */
     .hero {
       min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-      padding: 8rem 2rem 4rem; max-width: 900px; margin: 0 auto; position: relative;
+      padding: 8rem 2.5rem 4rem; max-width: 960px; margin: 0 auto;
     }
-    .hero-eyebrow { font-family: var(--font-mono); font-size: .8rem; color: var(--green); letter-spacing: .15em; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem; }
-    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--green); }
-    .hero-name { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -.03em; color: var(--text); margin-bottom: .5rem; }
-    .hero-name span { color: var(--green); }
-    .hero-role { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 300; color: var(--muted); margin-bottom: 2rem; }
-    .hero-desc { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.75; margin-bottom: 2.5rem; }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: .85;
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -.03em;
+      color: var(--text);
+      margin-bottom: .6rem;
+    }
+    .hero-name span { color: var(--accent); }
+    .hero-role {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      letter-spacing: -.01em;
+    }
+    .hero-desc {
+      font-size: .975rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2.75rem;
+    }
     .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary { background: var(--green); color: #0A0F1A; font-family: var(--font-display); font-weight: 600; padding: .75rem 1.75rem; border-radius: 8px; text-decoration: none; font-size: .9rem; transition: all .2s; border: none; cursor: pointer; }
-    .btn-primary:hover { background: #22c55e; transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: var(--text); font-family: var(--font-display); font-weight: 500; padding: .75rem 1.75rem; border-radius: 8px; text-decoration: none; font-size: .9rem; border: 1px solid var(--border); transition: all .2s; }
-    .btn-outline:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
 
-    .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(74,222,128,.06) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
-    .hero-glow { position: absolute; top: 20%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(74,222,128,.08) 0%, transparent 70%); pointer-events: none; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 600;
+      padding: .7rem 1.6rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: .875rem;
+      transition: all .2s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .01em;
+    }
+    .btn-primary:hover { background: #5a88d8; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-weight: 500;
+      padding: .7rem 1.6rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: .875rem;
+      border: 1px solid rgba(255,255,255,0.10);
+      transition: all .2s;
+      letter-spacing: .01em;
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.22); color: var(--text); transform: translateY(-1px); }
 
-    section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
-    .section-label { font-family: var(--font-mono); font-size: .75rem; color: var(--green); letter-spacing: .15em; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
-    .section-title { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 3rem; }
+    /* ── SECTIONS ── */
+    section { padding: 5.5rem 2.5rem; max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      color: var(--faint);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.07), transparent);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -.025em;
+      margin-bottom: 3rem;
+      color: var(--text);
+    }
 
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .about-text { color: var(--muted); line-height: 1.8; }
-    .about-text p + p { margin-top: 1rem; }
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+    .about-text { color: var(--muted); line-height: 1.85; font-size: .95rem; }
+    .about-text p + p { margin-top: 1.1rem; }
     .about-text strong { color: var(--text); font-weight: 500; }
-    .skills-group { margin-bottom: 1.5rem; }
-    .skills-group-label { font-family: var(--font-mono); font-size: .7rem; color: var(--faint); letter-spacing: .1em; margin-bottom: .6rem; }
+
+    .skills-group { margin-bottom: 1.75rem; }
+    .skills-group-label {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--faint);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
     .skills-list { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .skill-badge { font-family: var(--font-mono); font-size: .75rem; padding: .25rem .65rem; border-radius: 4px; background: var(--surface2); color: var(--green); border: 1px solid rgba(74,222,128,.2); }
+    .skill-badge {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      padding: .25rem .65rem;
+      border-radius: 4px;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: border-color .2s, color .2s;
+    }
+    .skill-badge:hover { border-color: rgba(77,120,200,0.4); color: var(--text); }
 
-    .projects-grid { display: grid; gap: 1.5rem; }
-    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all .25s; position: relative; }
-    .project-card:hover { border-color: rgba(74,222,128,.3); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
-    .card-accent { height: 3px; width: 100%; }
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; gap: 1.25rem; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+      position: relative;
+    }
+    .project-card:hover {
+      border-color: rgba(255,255,255,0.13);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.45);
+    }
+    .card-accent { height: 2px; width: 100%; }
     .card-body { padding: 1.75rem; }
-    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
-    .card-icon { font-size: 1.5rem; }
-    .card-links { display: flex; gap: .5rem; margin-left: auto; flex-wrap: wrap; }
-    .card-link { display: flex; align-items: center; gap: .35rem; font-family: var(--font-mono); font-size: .7rem; padding: .35rem .7rem; border-radius: 6px; text-decoration: none; transition: all .2s; white-space: nowrap; }
-    .card-link.live { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,.25); }
-    .card-link.live:hover { background: var(--green-mid); }
-    .card-link.repo { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .card-link.repo:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
-    .card-link.no-deploy { background: rgba(251,191,36,.08); color: #FCD34D; border: 1px solid rgba(251,191,36,.2); cursor: default; }
-    .card-link.wip { background: rgba(99,102,241,.1); color: #818cf8; border: 1px solid rgba(99,102,241,.25); cursor: default; }
-    .card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: .5rem; }
-    .card-desc { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-bottom: 1.25rem; }
+    .card-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 1.1rem; gap: 1rem;
+    }
+    .card-icon { font-size: 1.35rem; }
+    .card-links { display: flex; gap: .4rem; margin-left: auto; flex-wrap: wrap; }
+    .card-link {
+      display: flex; align-items: center; gap: .3rem;
+      font-family: var(--font-mono); font-size: .68rem;
+      padding: .3rem .65rem; border-radius: 5px;
+      text-decoration: none; transition: all .2s; white-space: nowrap;
+    }
+    .card-link.live {
+      background: var(--accent-dim);
+      color: #7DA8E8;
+      border: 1px solid rgba(77,120,200,0.25);
+    }
+    .card-link.live:hover { background: var(--accent-mid); }
+    .card-link.repo {
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .card-link.repo:hover { color: var(--text); border-color: rgba(255,255,255,.15); }
+    .card-link.no-deploy {
+      background: rgba(200,160,60,.07);
+      color: #C8A850;
+      border: 1px solid rgba(200,160,60,.18);
+      cursor: default;
+    }
+    .card-link.wip {
+      background: rgba(110,100,200,.08);
+      color: #9090C0;
+      border: 1px solid rgba(110,100,200,.2);
+      cursor: default;
+    }
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      padding: .18rem .55rem;
+      border-radius: 4px;
+      background: var(--accent-dim);
+      color: #7DA8E8;
+      border: 1px solid rgba(77,120,200,.22);
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: .45rem;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .card-desc { color: var(--muted); font-size: .88rem; line-height: 1.7; margin-bottom: 1.25rem; }
     .card-features { margin-bottom: 1.25rem; }
-    .card-features-title { font-family: var(--font-mono); font-size: .7rem; color: var(--faint); letter-spacing: .1em; margin-bottom: .5rem; }
+    .card-features-title {
+      font-family: var(--font-mono); font-size: .65rem;
+      color: var(--faint); letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: .5rem;
+    }
     .card-features ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
-    .card-features li { font-size: .85rem; color: var(--muted); display: flex; align-items: flex-start; gap: .5rem; }
-    .card-features li::before { content: '→'; color: var(--green); font-size: .8rem; margin-top: .1rem; flex-shrink: 0; }
-    .card-stack { display: flex; flex-wrap: wrap; gap: .35rem; }
-    .stack-tag { font-family: var(--font-mono); font-size: .7rem; padding: .2rem .55rem; border-radius: 4px; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .card-features li {
+      font-size: .84rem; color: var(--muted);
+      display: flex; align-items: flex-start; gap: .5rem;
+    }
+    .card-features li::before { content: '–'; color: var(--accent); font-size: .8rem; margin-top: .05rem; flex-shrink: 0; }
+    .card-stack { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .stack-tag {
+      font-family: var(--font-mono); font-size: .68rem;
+      padding: .18rem .5rem; border-radius: 4px;
+      background: var(--surface2); color: var(--faint);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
 
-    .edu-list { display: flex; flex-direction: column; gap: 1.5rem; }
-    .edu-item { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
-    .edu-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); margin-top: .45rem; flex-shrink: 0; }
-    .edu-year { font-family: var(--font-mono); font-size: .75rem; color: var(--green); margin-bottom: .25rem; }
-    .edu-school { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: .25rem; }
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .edu-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      padding: 1.5rem 1.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color .2s;
+    }
+    .edu-item:hover { border-color: rgba(255,255,255,0.12); }
+    .edu-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); margin-top: .5rem; flex-shrink: 0;
+    }
+    .edu-year {
+      font-family: var(--font-mono); font-size: .72rem;
+      color: var(--faint); letter-spacing: .06em; margin-bottom: .3rem;
+    }
+    .edu-school {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: .975rem; margin-bottom: .25rem; color: var(--text);
+    }
     .edu-degree { color: var(--muted); font-size: .875rem; }
 
-    .contact-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 3rem; text-align: center; }
-    .contact-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
-    .contact-desc { color: var(--muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto; }
-    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3.5rem;
+      text-align: center;
+    }
+    .contact-title {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -.02em;
+    }
+    .contact-desc {
+      color: var(--muted); font-size: .95rem;
+      margin-bottom: 2.25rem;
+      max-width: 400px; margin-left: auto; margin-right: auto; margin-bottom: 2.25rem;
+    }
+    .contact-links { display: flex; justify-content: center; gap: .75rem; flex-wrap: wrap; }
 
-    footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--faint); font-family: var(--font-mono); font-size: .75rem; }
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--faint);
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
 
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    /* ── ANIMATIONS ── */
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
       nav { padding: .75rem 1.25rem; }
       .nav-links { display: none; }
       .hero { padding: 7rem 1.25rem 3rem; }
       section { padding: 4rem 1.25rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.25rem; }
       .card-header { flex-direction: column; }
       .card-links { flex-direction: row; flex-wrap: wrap; }
       .contact-wrapper { padding: 2rem 1.25rem; }
+      footer { justify-content: center; text-align: center; }
     }
 
-    [data-lang] { transition: opacity .2s; }
+    [data-lang] { transition: opacity .15s; }
   </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-logo">jm.dev</span>
+  <span class="nav-logo">Juan<span>.</span>dev</span>
   <ul class="nav-links">
     <li><a href="#about" data-en="About" data-es="Sobre mí">About</a></li>
     <li><a href="#projects" data-en="Projects" data-es="Proyectos">Projects</a></li>
@@ -163,8 +399,7 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-glow"></div>
-  <p class="hero-eyebrow" data-en="Hello, world — I'm" data-es="Hola, mundo — soy">Hello, world — I'm</p>
+  <p class="hero-eyebrow" data-en="Frontend Developer" data-es="Desarrollador Frontend">Frontend Developer</p>
   <h1 class="hero-name">Juan<br><span>Manuel.</span></h1>
   <p class="hero-role" data-en="Frontend Developer & Systems Engineering Student" data-es="Desarrollador Frontend & Estudiante de Ingeniería de Sistemas">Frontend Developer & Systems Engineering Student</p>
   <p class="hero-desc" data-en="I build responsive, accessible interfaces with React, JavaScript and TailwindCSS. Focused on clean code, solid UX, and shipping things that actually work." data-es="Construyo interfaces responsivas y accesibles con React, JavaScript y TailwindCSS. Enfocado en código limpio, buen UX y entregar proyectos que realmente funcionen.">I build responsive, accessible interfaces with React, JavaScript and TailwindCSS. Focused on clean code, solid UX, and shipping things that actually work.</p>
@@ -212,17 +447,17 @@
   <div class="projects-grid">
 
     <!-- ── 1. CRYPTODASH ── -->
-    <div class="project-card" style="border-color: rgba(6,182,212,.2);">
-      <div class="card-accent" style="background: linear-gradient(to right, #06b6d4, #3b82f6, #06b6d4);"></div>
+    <div class="project-card" style="border-color: rgba(77,120,200,.18);">
+      <div class="card-accent" style="background: linear-gradient(to right, #3B7DD8, #2563C0);"></div>
       <div class="card-body">
         <div class="card-header">
           <div style="display:flex;align-items:center;gap:.6rem;">
-            <span style="font-size:1.4rem;">📈</span>
-            <span style="font-family:var(--font-mono);font-size:.65rem;padding:.2rem .6rem;border-radius:4px;background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.25);" data-en="Full-stack" data-es="Full-stack">Full-stack</span>
+            <span style="font-size:1.3rem;">📈</span>
+            <span class="card-badge" data-en="Full-stack" data-es="Full-stack">Full-stack</span>
           </div>
           <div class="card-links">
-            <a href="https://github.com/JuanManuel1904" target="_blank" class="card-link repo">⌥ GitHub</a>
-            <a href="https://cryptodash-frontend.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+            <a href="https://github.com/JuanManuel1904" target="_blank" class="card-link repo">GitHub ↗</a>
+            <a href="https://cryptodash-frontend.vercel.app/" target="_blank" class="card-link live"><span data-en="Live Demo" data-es="Demo">Live Demo</span> ↗</a>
           </div>
         </div>
         <h3 class="card-title">CryptoDash — Real-time Crypto Dashboard</h3>
@@ -243,17 +478,17 @@
     </div>
 
     <!-- ── 2. VISUAL API BUILDER ── -->
-    <div class="project-card" style="border-color: rgba(99,102,241,.25);">
-      <div class="card-accent" style="background: linear-gradient(to right, #A855F7, #6366F1, #818cf8);"></div>
+    <div class="project-card">
+      <div class="card-accent" style="background: linear-gradient(to right, #5B4FC0, #7C6DD8);"></div>
       <div class="card-body">
         <div class="card-header">
           <div style="display:flex;align-items:center;gap:.6rem;">
-            <span style="font-size:1.4rem;">⬡</span>
-            <span style="font-family:var(--font-mono);font-size:.65rem;padding:.2rem .6rem;border-radius:4px;background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.3);" data-en="Full-stack · Low-code" data-es="Full-stack · Low-code">Full-stack</span>
+            <span style="font-size:1.3rem;">⬡</span>
+            <span class="card-badge" data-en="Full-stack · Low-code" data-es="Full-stack · Low-code">Full-stack · Low-code</span>
           </div>
           <div class="card-links">
-            <a href="https://github.com/JuanManuel1904/API-Builder" target="_blank" class="card-link repo">⌥ GitHub</a>
-            <a href="https://api-builder-frontend.vercel.app" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+            <a href="https://github.com/JuanManuel1904/API-Builder" target="_blank" class="card-link repo">GitHub ↗</a>
+            <a href="https://api-builder-frontend.vercel.app" target="_blank" class="card-link live"><span data-en="Live Demo" data-es="Demo">Live Demo</span> ↗</a>
           </div>
         </div>
         <h3 class="card-title">Visual API Builder</h3>
@@ -276,11 +511,11 @@
 
     <!-- ── 3. WEATHERLY ── -->
     <div class="project-card">
-      <div class="card-accent" style="background: linear-gradient(to right, #00D4FF, #3B82F6);"></div>
+      <div class="card-accent" style="background: linear-gradient(to right, #2C7EC0, #4399D8);"></div>
       <div class="card-body">
         <div class="card-header">
           <div class="card-links">
-            <a href="https://weatherly-one-sigma.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+            <a href="https://weatherly-one-sigma.vercel.app/" target="_blank" class="card-link live"><span data-en="Live Demo" data-es="Demo">Live Demo</span> ↗</a>
           </div>
         </div>
         <h3 class="card-title">Weatherly — Weather App</h3>
@@ -302,12 +537,12 @@
 
     <!-- ── 4. SHRT.LY ── -->
     <div class="project-card">
-      <div class="card-accent" style="background: linear-gradient(to right, #E8623D, #C44E2D);"></div>
+      <div class="card-accent" style="background: linear-gradient(to right, #B05030, #8C3E26);"></div>
       <div class="card-body">
         <div class="card-header">
           <span class="card-icon">🎟️</span>
           <div class="card-links">
-            <a href="https://url-shortener-nine-xi-26.vercel.app" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+            <a href="https://url-shortener-nine-xi-26.vercel.app" target="_blank" class="card-link live"><span data-en="Live Demo" data-es="Demo">Live Demo</span> ↗</a>
           </div>
         </div>
         <h3 class="card-title">Shrt.ly — URL Shortener</h3>
@@ -329,11 +564,11 @@
 
     <!-- ── 5. TODO APP ── -->
     <div class="project-card">
-      <div class="card-accent" style="background: linear-gradient(to right, #4ADE80, #22c55e);"></div>
+      <div class="card-accent" style="background: linear-gradient(to right, #2F7A50, #3A9060);"></div>
       <div class="card-body">
         <div class="card-header">
           <div class="card-links">
-            <a href="https://do-it-website-lyart.vercel.app/" target="_blank" class="card-link live">↗ <span data-en="Live Demo" data-es="Demo">Live Demo</span></a>
+            <a href="https://do-it-website-lyart.vercel.app/" target="_blank" class="card-link live"><span data-en="Live Demo" data-es="Demo">Live Demo</span> ↗</a>
           </div>
         </div>
         <h3 class="card-title">ToDo App — Task Manager</h3>
@@ -381,7 +616,7 @@
 
 <section id="contact" class="fade-in">
   <div class="contact-wrapper">
-    <p class="section-label" style="justify-content:center;margin-bottom:1rem;" data-en="04 / CONTACT" data-es="04 / CONTACTO">04 / CONTACT</p>
+    <p class="section-label" style="justify-content:center;margin-bottom:1.25rem;" data-en="04 / CONTACT" data-es="04 / CONTACTO">04 / CONTACT</p>
     <h2 class="contact-title" data-en="Let's build something." data-es="Construyamos algo juntos.">Let's build something.</h2>
     <p class="contact-desc" data-en="Open to freelance projects, internships, and junior developer roles. Feel free to reach out." data-es="Disponible para proyectos freelance, pasantías y posiciones junior. No dudes en escribirme.">Open to freelance projects, internships, and junior developer roles. Feel free to reach out.</p>
     <div class="contact-links">
@@ -392,7 +627,10 @@
   </div>
 </section>
 
-<footer></footer>
+<footer>
+  <span>Juan Manuel Castaño · Frontend Developer</span>
+  <span>Pereira, Colombia</span>
+</footer>
 
 <script>
   let currentLang = 'en';
@@ -419,7 +657,7 @@
     let current = '';
     sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
     navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--green)' : '';
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
     });
   });
 </script>
