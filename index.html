@@ -25,7 +25,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     /* ───────────────────────────────────────────────
@@ -265,15 +265,14 @@
       border-radius: 17px;
       border: 1px solid transparent;
       background: transparent;
-      backdrop-filter: blur(0px) saturate(100%);
-      -webkit-backdrop-filter: blur(0px) saturate(100%);
       box-shadow: none;
+      /* No backdrop-filter at rest: declaring one — even blur(0px) —
+         makes the compositor capture the backdrop on every scroll
+         frame for the whole page. It only exists once materialized. */
       transition:
-        background-color .34s cubic-bezier(.22,1,.36,1),
-        border-color .34s cubic-bezier(.22,1,.36,1),
-        box-shadow .34s cubic-bezier(.22,1,.36,1),
-        backdrop-filter .34s cubic-bezier(.22,1,.36,1),
-        -webkit-backdrop-filter .34s cubic-bezier(.22,1,.36,1);
+        background-color .26s cubic-bezier(.22,1,.36,1),
+        border-color .26s cubic-bezier(.22,1,.36,1),
+        box-shadow .26s cubic-bezier(.22,1,.36,1);
     }
     /* The material arrives as you scroll: blur + background together, not a fade. */
     nav.materialized {
@@ -331,7 +330,6 @@
       background: var(--surface-2);
       opacity: 0;
       transition: opacity .25s ease;
-      will-change: transform, width;
     }
     .nav-indicator.on { opacity: 1; }
 
@@ -352,7 +350,6 @@
       border-radius: 9px;
       background: var(--surface-solid);
       box-shadow: var(--shadow-sm);
-      will-change: transform, width;
     }
     .seg-btn {
       position: relative; z-index: 1;
@@ -396,8 +393,6 @@
     .btn-primary:hover { --lift: -2px; box-shadow: var(--shadow-md); }
     .btn-outline {
       background: var(--surface);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       color: var(--text);
       border-color: var(--border);
       font-weight: 500;
@@ -418,8 +413,6 @@
       padding: 0.36rem 0.85rem 0.36rem 0.7rem;
       border-radius: 999px;
       background: var(--surface);
-      backdrop-filter: blur(12px) saturate(160%);
-      -webkit-backdrop-filter: blur(12px) saturate(160%);
       border: 1px solid var(--border);
       font-family: var(--font-mono);
       font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
@@ -493,8 +486,6 @@
     .project-card {
       position: relative;
       background: var(--surface);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
       border: 1px solid var(--border);
       border-radius: 18px;
       overflow: hidden;
@@ -576,8 +567,6 @@
       display: flex; gap: 1.4rem; align-items: flex-start;
       padding: 1.6rem 1.75rem;
       background: var(--surface);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       border-radius: 16px;
       transform: translate3d(0, var(--lift), 0);
@@ -598,8 +587,6 @@
     .contact-wrapper {
       position: relative;
       background: var(--surface);
-      backdrop-filter: blur(24px) saturate(170%);
-      -webkit-backdrop-filter: blur(24px) saturate(170%);
       border: 1px solid var(--border);
       border-radius: 24px;
       padding: 4rem 2.5rem;
@@ -630,7 +617,7 @@
     /* ───────────────────────────────────────────────
        7. REVEAL — driven by a spring in JS
        ─────────────────────────────────────────────── */
-    .js [data-reveal] { opacity: 0; will-change: transform, opacity; }
+    .js [data-reveal] { opacity: 0; }
     .revealed { opacity: 1; }
 
     /* ───────────────────────────────────────────────
@@ -1002,66 +989,73 @@
   </section>
 </main>
 
-<footer class="container">
-  <span data-en="Juan Manuel Castaño · Frontend Developer" data-es="Juan Manuel Castaño · Desarrollador Frontend">Juan Manuel Castaño · Frontend Developer</span>
-  <span>Pereira, Colombia</span>
-</footer>
+
 
 <script>
 (function () {
   'use strict';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ─────────────────────────────────────────────
-     Spring — numeric, interruptible, velocity-aware.
-     Re-targeting keeps the current value AND velocity,
-     so a reversal never hits a brick wall.
-     bounce 0 = critically damped; response = seconds to settle.
+     ONE clock for every spring on the page.
+     Previously each spring drove its own rAF loop, so a reveal
+     cascade could run a dozen loops writing styles in different
+     frames. Now: one frame, one batch of writes, and no loop at
+     all while nothing is moving.
      ───────────────────────────────────────────── */
+  const ticker = (function () {
+    const active = new Set();
+    let raf = 0, last = 0;
+
+    function frame(now) {
+      let dt = (now - last) / 1000;
+      last = now;
+      if (dt > 0.064) dt = 0.064;          // a dropped frame must not explode the sim
+      active.forEach(s => { if (!s.step(dt)) active.delete(s); });
+      raf = active.size ? requestAnimationFrame(frame) : 0;
+    }
+
+    return function add(s) {
+      active.add(s);
+      if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+    };
+  })();
+
+  /* Spring — interruptible and velocity-aware. Re-targeting keeps the
+     current value AND velocity, so a reversal never hits a brick wall.
+     bounce 0 = critically damped; response = seconds to settle. */
   function createSpring(initial, opts) {
-    const o = opts || {};
     const s = {
-      value: initial,
-      velocity: 0,
-      target: initial,
-      bounce: o.bounce || 0,
-      response: o.response || 0.4,
-      precision: o.precision || 0.002,
-      onUpdate: o.onUpdate,
-      running: false,
-      last: 0
+      value: initial, velocity: 0, target: initial,
+      bounce: opts.bounce || 0,
+      response: opts.response || 0.4,
+      precision: opts.precision || 0.001,
+      onUpdate: opts.onUpdate,
+      onRest: opts.onRest,
+      running: false
     };
 
-    function tick(now) {
-      if (!s.running) return;
-      let dt = (now - s.last) / 1000;
-      s.last = now;
-      if (dt > 0.064) dt = 0.064;               // a dropped frame must not explode the sim
-
-      const zeta = Math.max(0, 1 - s.bounce);
-      const omega = (2 * Math.PI) / s.response;
-      const steps = Math.max(1, Math.ceil(dt * 240));
+    s.step = function (dt) {
+      const zeta = 1 - s.bounce;
+      const omega = 6.283185 / s.response;
+      const steps = Math.min(8, Math.ceil(dt * 240));
       const h = dt / steps;
-
       for (let i = 0; i < steps; i++) {
-        const a = -omega * omega * (s.value - s.target) - 2 * zeta * omega * s.velocity;
-        s.velocity += a * h;
+        s.velocity += (-omega * omega * (s.value - s.target) - 2 * zeta * omega * s.velocity) * h;
         s.value += s.velocity * h;
       }
-
-      s.onUpdate(s.value);
-
-      if (Math.abs(s.value - s.target) < s.precision && Math.abs(s.velocity) < s.precision * 8) {
-        s.value = s.target;
-        s.velocity = 0;
+      if (Math.abs(s.value - s.target) < s.precision &&
+          Math.abs(s.velocity) < s.precision * 10) {
+        s.value = s.target; s.velocity = 0; s.running = false;
         s.onUpdate(s.value);
-        s.running = false;
-        return;
+        if (s.onRest) s.onRest();
+        return false;
       }
-      requestAnimationFrame(tick);
-    }
+      s.onUpdate(s.value);
+      return true;
+    };
 
     s.to = function (target, cfg) {
       s.target = target;
@@ -1070,14 +1064,13 @@
         if (cfg.response !== undefined) s.response = cfg.response;
         if (cfg.velocity !== undefined) s.velocity = cfg.velocity;
       }
-      if (reduceMotion.matches) {                // gentler equivalent: land immediately
-        s.value = target; s.velocity = 0; s.running = false; s.onUpdate(s.value); return;
+      if (reduceMotion.matches) {           // gentler equivalent: land immediately
+        s.value = target; s.velocity = 0; s.running = false;
+        s.onUpdate(s.value);
+        if (s.onRest) s.onRest();
+        return;
       }
-      if (!s.running) {
-        s.running = true;
-        s.last = performance.now();
-        requestAnimationFrame(tick);
-      }
+      if (!s.running) { s.running = true; ticker(s); }
     };
 
     s.set = function (v) { s.value = v; s.velocity = 0; s.onUpdate(v); };
@@ -1086,50 +1079,76 @@
 
   /* ─────────────────────────────────────────────
      Press feedback — on pointer-DOWN, never on click.
-     Dragging away cancels; releasing commits with a
-     touch of bounce because the finger carried momentum.
+     Delegated: four listeners on the document instead of five on
+     each of ~25 elements, with the spring created lazily on first
+     touch. pointerover fires only when the pointer crosses an
+     element boundary, so dragging away still cancels for free.
      ───────────────────────────────────────────── */
-  function makePressable(el) {
-    const spring = createSpring(1, {
-      response: 0.32,
-      precision: 0.0008,
-      onUpdate: v => el.style.setProperty('--press', v)
-    });
-    const down = () => spring.to(0.965, { bounce: 0, response: 0.24 });
-    const up   = () => spring.to(1,     { bounce: 0.22, response: 0.4 });
+  const pressSprings = new WeakMap();
+  let pressed = null;
 
-    el.addEventListener('pointerdown', down);
-    el.addEventListener('pointerup', up);
-    el.addEventListener('pointercancel', up);
-    el.addEventListener('pointerleave', up);
-    el.addEventListener('blur', up);
+  function pressSpring(el) {
+    let s = pressSprings.get(el);
+    if (!s) {
+      s = createSpring(1, {
+        precision: 0.001,
+        onUpdate: v => el.style.setProperty('--press', v)
+      });
+      pressSprings.set(el, s);
+    }
+    return s;
   }
-  document.querySelectorAll('[data-press]').forEach(makePressable);
+  function release() {
+    if (!pressed) return;
+    pressSpring(pressed).to(1, { bounce: 0.22, response: 0.4 });
+    pressed = null;
+  }
+
+  document.addEventListener('pointerdown', e => {
+    const el = e.target.closest && e.target.closest('[data-press]');
+    if (!el) return;
+    if (pressed && pressed !== el) release();
+    pressed = el;
+    pressSpring(el).to(0.965, { bounce: 0, response: 0.22 });
+  }, { passive: true });
+
+  document.addEventListener('pointerup', release, { passive: true });
+  document.addEventListener('pointercancel', release, { passive: true });
+  document.addEventListener('pointerover', e => {
+    if (pressed && !pressed.contains(e.target)) release();
+  }, { passive: true });
 
   /* ─────────────────────────────────────────────
-     Segmented control — the knob springs between
-     segments and can be re-targeted mid-flight.
+     Segmented control — the knob springs between segments and can
+     be re-targeted mid-flight. Geometry is measured once and on
+     resize, never while animating.
      ───────────────────────────────────────────── */
   function createSegmented(el, onCommit) {
     const knob = el.querySelector('.seg-knob');
     const btns = Array.from(el.querySelectorAll('.seg-btn'));
     let index = 0;
+    let geo = [];
 
-    const x = createSpring(0, { response: 0.35, precision: 0.05, onUpdate: v => {
-      knob.style.transform = 'translate3d(' + v + 'px, 0, 0)';
-    }});
-    const w = createSpring(0, { response: 0.35, precision: 0.05, onUpdate: v => {
-      knob.style.width = v + 'px';
-    }});
+    function measure() { geo = btns.map(b => ({ left: b.offsetLeft, width: b.offsetWidth })); }
 
-    function geometry(i) {
-      const b = btns[i];
-      return { left: b.offsetLeft, width: b.offsetWidth };
-    }
+    // X and width are independent springs, but they now tick in the
+    // same frame, so the knob can never desync from itself.
+    const x = createSpring(0, {
+      response: 0.35, precision: 0.1,
+      onUpdate: v => { knob.style.transform = 'translate3d(' + v + 'px,0,0)'; },
+      onRest: () => { knob.style.willChange = ''; }
+    });
+    const w = createSpring(0, {
+      response: 0.35, precision: 0.1,
+      onUpdate: v => { knob.style.width = v + 'px'; }
+    });
+
     function moveTo(i, instant) {
-      const g = geometry(i);
+      const g = geo[i];
+      if (!g) return;
       if (instant) { x.set(g.left); w.set(g.width); return; }
-      x.to(g.left);                 // X and W are independent springs — no desync
+      knob.style.willChange = 'transform, width';
+      x.to(g.left);
       w.to(g.width);
     }
     function select(value, opts) {
@@ -1142,11 +1161,11 @@
 
     btns.forEach((btn, i) => {
       // Move the knob the instant the finger lands — response before commit.
-      btn.addEventListener('pointerdown', () => moveTo(i));
-      btn.addEventListener('pointerleave', () => moveTo(index));
-      btn.addEventListener('pointercancel', () => moveTo(index));
+      btn.addEventListener('pointerdown', () => moveTo(i), { passive: true });
+      btn.addEventListener('pointerleave', () => moveTo(index), { passive: true });
+      btn.addEventListener('pointercancel', () => moveTo(index), { passive: true });
       btn.addEventListener('click', () => {
-        if (btns[i].dataset.value === btns[index].dataset.value) return;
+        if (btn.dataset.value === btns[index].dataset.value) return;
         select(btn.dataset.value);
         if (navigator.vibrate) { try { navigator.vibrate(6); } catch (e) {} }
         onCommit(btn.dataset.value);
@@ -1161,7 +1180,10 @@
       });
     });
 
-    return { select, relayout: () => moveTo(index, true) };
+    return {
+      select: select,
+      relayout: function () { measure(); moveTo(index, true); }
+    };
   }
 
   /* ─────────────────────────────────────────────
@@ -1170,11 +1192,8 @@
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
   let themePref = root.getAttribute('data-theme-pref') || 'auto';
 
-  function resolve(pref) {
-    return pref === 'auto' ? (systemDark.matches ? 'dark' : 'light') : pref;
-  }
   function paint(pref) {
-    root.setAttribute('data-theme', resolve(pref));
+    root.setAttribute('data-theme', pref === 'auto' ? (systemDark.matches ? 'dark' : 'light') : pref);
     root.setAttribute('data-theme-pref', pref);
   }
   function applyTheme(pref, origin) {
@@ -1189,14 +1208,12 @@
         const r = origin.getBoundingClientRect();
         const cx = r.left + r.width / 2;
         const cy = r.top + r.height / 2;
-        const radius = Math.hypot(
-          Math.max(cx, innerWidth - cx),
-          Math.max(cy, innerHeight - cy)
-        );
+        const radius = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
         root.animate(
           { clipPath: ['circle(0px at ' + cx + 'px ' + cy + 'px)',
                        'circle(' + radius + 'px at ' + cx + 'px ' + cy + 'px)'] },
-          { duration: 480, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+          { duration: 460, easing: 'cubic-bezier(.22,1,.36,1)',
+            pseudoElement: '::view-transition-new(root)' }
         );
       }).catch(() => {});
     } else {
@@ -1216,7 +1233,7 @@
   let currentLang = 'en';
   try {
     const saved = localStorage.getItem('lang-pref');
-    currentLang = saved === 'es' || saved === 'en'
+    currentLang = (saved === 'es' || saved === 'en')
       ? saved
       : ((navigator.language || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en');
   } catch (e) {}
@@ -1245,88 +1262,129 @@
       b.setAttribute('title', label);
     });
 
-    // Nav labels changed width — the indicator and knobs must follow.
-    if (!opts || !opts.silent) requestAnimationFrame(() => { syncNavIndicator(true); themeSeg.relayout(); });
+    // Nav labels changed width — re-measure once, here, rather than
+    // letting the scroll path discover it later.
+    if (!opts || !opts.silent) {
+      requestAnimationFrame(() => { measureLinks(); syncNavIndicator(true); themeSeg.relayout(); });
+    }
   }
 
   const langSeg = createSegmented(document.getElementById('langSeg'), setLang);
 
   /* ─────────────────────────────────────────────
-     Nav — materialize on scroll, spring the active pill
+     Nav — no scroll listener at all.
+     The old version read every section's offsetTop on each scroll
+     tick, forcing a layout while scrolling. Both jobs are now
+     IntersectionObservers: the browser resolves them off the
+     scroll path and reports only when something actually changes.
      ───────────────────────────────────────────── */
   const nav = document.getElementById('nav');
+  const navLinksWrap = document.getElementById('navLinksWrap');
   const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
   const indicator = document.getElementById('navIndicator');
   const sections = Array.from(document.querySelectorAll('section[id]'));
+  const sectionIds = sections.map(s => s.id);
 
-  const indX = createSpring(0, { response: 0.4, precision: 0.05, onUpdate: v => {
-    indicator.style.transform = 'translate3d(' + v + 'px, 0, 0)';
-  }});
-  const indW = createSpring(0, { response: 0.4, precision: 0.05, onUpdate: v => {
-    indicator.style.width = v + 'px';
-  }});
+  let linkGeo = [];
+  function measureLinks() {
+    linkGeo = navLinks.map(a => ({
+      id: a.getAttribute('href').slice(1),
+      left: a.offsetLeft,
+      width: a.offsetWidth
+    }));
+  }
+
+  const indX = createSpring(0, {
+    response: 0.4, precision: 0.1,
+    onUpdate: v => { indicator.style.transform = 'translate3d(' + v + 'px,0,0)'; },
+    onRest: () => { indicator.style.willChange = ''; }
+  });
+  const indW = createSpring(0, {
+    response: 0.4, precision: 0.1,
+    onUpdate: v => { indicator.style.width = v + 'px'; }
+  });
 
   let currentId = '';
   function syncNavIndicator(instant) {
-    const link = navLinks.find(a => a.getAttribute('href') === '#' + currentId);
-    if (!link || getComputedStyle(document.getElementById('navLinksWrap')).display === 'none') {
-      indicator.classList.remove('on');
-      return;
-    }
+    const g = linkGeo.find(l => l.id === currentId);
+    if (!g || navLinksWrap.offsetParent === null) { indicator.classList.remove('on'); return; }
     indicator.classList.add('on');
-    if (instant) { indX.set(link.offsetLeft); indW.set(link.offsetWidth); }
-    else { indX.to(link.offsetLeft); indW.to(link.offsetWidth); }
+    if (instant) { indX.set(g.left); indW.set(g.width); return; }
+    indicator.style.willChange = 'transform, width';
+    indX.to(g.left);
+    indW.to(g.width);
   }
 
-  let ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      ticking = false;
-      nav.classList.toggle('materialized', window.scrollY > 12);
+  // Materialize the nav off a 1px sentinel at the top of the document,
+  // so crossing the threshold costs nothing per frame.
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:14px;pointer-events:none;';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(entries => {
+    nav.classList.toggle('materialized', !entries[0].isIntersecting);
+  }).observe(sentinel);
 
-      let id = '';
-      const line = window.scrollY + window.innerHeight * 0.32;
-      sections.forEach(s => { if (line >= s.offsetTop) id = s.id; });
-      if (id !== currentId) {
-        currentId = id;
-        navLinks.forEach(a => a.classList.toggle('current', a.getAttribute('href') === '#' + id));
-        syncNavIndicator(false);
-      }
+  // Active section: a thin detection band across the upper third.
+  const visible = new Set();
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
     });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { syncNavIndicator(true); themeSeg.relayout(); langSeg.relayout(); });
+    let id = currentId;
+    const inBand = sectionIds.filter(x => visible.has(x));
+    if (inBand.length) id = inBand[inBand.length - 1];
+    else if (window.scrollY < 120) id = '';        // back up in the hero
+    if (id === currentId) return;
+    currentId = id;
+    navLinks.forEach(a => a.classList.toggle('current', a.getAttribute('href') === '#' + id));
+    syncNavIndicator(false);
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(sec => spy.observe(sec));
+
+  // Resize storms (the mobile URL bar) collapse into one measurement.
+  let resizeRaf = 0;
+  window.addEventListener('resize', () => {
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = 0;
+      measureLinks();
+      syncNavIndicator(true);
+      themeSeg.relayout();
+      langSeg.relayout();
+    });
+  }, { passive: true });
 
   /* ─────────────────────────────────────────────
-     Reveal on scroll — one spring drives opacity and
-     offset together, so it can be interrupted cleanly.
+     Reveal on scroll — one spring per element drives opacity and
+     offset in a single style write, and will-change is set only
+     for the moment the element is actually moving.
      ───────────────────────────────────────────── */
-  const revealTargets = Array.from(document.querySelectorAll('[data-reveal]'));
-
   function reveal(el, delay) {
     const s = createSpring(0, {
-      response: 0.55,
-      precision: 0.0015,
+      response: 0.5, precision: 0.002,
       onUpdate: p => {
         el.style.opacity = p;
-        el.style.transform = 'translate3d(0, ' + ((1 - p) * 18).toFixed(2) + 'px, 0)';
-      }
+        el.style.transform = 'translate3d(0,' + ((1 - p) * 16).toFixed(2) + 'px,0)';
+      },
+      onRest: () => { el.style.willChange = ''; el.style.transform = ''; }
     });
-    el.style.transform = 'translate3d(0, 18px, 0)';
-    setTimeout(() => s.to(1), delay);
-    // Once settled the transform is dead weight on the compositor.
-    setTimeout(() => { el.style.willChange = 'auto'; el.style.transform = ''; }, delay + 1400);
+    el.style.transform = 'translate3d(0,16px,0)';
+    const start = () => { el.style.willChange = 'transform, opacity'; s.to(1); };
+    if (delay) setTimeout(start, delay);
+    else start();
   }
 
+  const revealTargets = Array.from(document.querySelectorAll('[data-reveal]'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries, obs) => {
-      const shown = entries.filter(e => e.isIntersecting);
-      shown.forEach((e, i) => {
+      let i = 0;
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
         obs.unobserve(e.target);
         e.target.classList.add('revealed');
-        reveal(e.target, Math.min(i, 5) * 55);
+        reveal(e.target, Math.min(i++, 4) * 55);
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
     revealTargets.forEach(el => io.observe(el));
@@ -1338,10 +1396,12 @@
      Boot
      ───────────────────────────────────────────── */
   function boot() {
+    themeSeg.relayout();
+    langSeg.relayout();
     themeSeg.select(themePref, { instant: true });
     langSeg.select(currentLang, { instant: true });
     if (currentLang !== 'en') setLang(currentLang, { silent: true });
-    onScroll();
+    measureLinks();
     syncNavIndicator(true);
   }
 
